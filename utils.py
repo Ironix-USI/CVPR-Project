@@ -241,11 +241,15 @@ def sequential_msac(correspondences, threshold, min_correspondences_count,confid
 '''
     Function to draw the bounding boxes
 '''
-def draw_bounding_boxes(img_target_plot, img_template_plot, models, scale_factor=1, isPostJLinkage=False, color=(255, 255, 255)):
+def draw_bounding_boxes(img_target_plot, img_template_plot, models, scale_factor=1, isPostJLinkage=False, color=(255, 255, 255), name=None):
 
     plt.figure(figsize=(30,15))
     plt.title("All objects identified")
+    # font
+    font = cv.FONT_HERSHEY_SIMPLEX
 
+    # Blue color in BGR
+    color = (255, 0, 0)
 
     h,w = cv.cvtColor(img_template_plot, cv.COLOR_BGR2GRAY).shape
     pts = np.float32([[0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
@@ -262,11 +266,16 @@ def draw_bounding_boxes(img_target_plot, img_template_plot, models, scale_factor
         #if abs(np.linalg.det(H)) < 0.75:
         H = scale_homography(H, scale_factor)
         dst = cv.perspectiveTransform(pts,H)
-        img_target_plot = cv.polylines(img_target_plot,[np.int32(dst)],True,color,3, cv.LINE_AA)
+        if name:
+            x,y,w,h = dst
+            _x = x[0][0]
+            _y = x[0][1]
+            img_target_plot = cv.putText(img_target_plot, name, (_x,_y), font, 2, (255,255,255), 5, cv.LINE_AA)
+        img_target_plot = cv.polylines(img_target_plot,[np.int32(dst)],True,color,5, cv.LINE_AA)
         #else:
             #break
-    
-    
+
+
 
     plt.imshow(cv.cvtColor(img_target_plot, cv.COLOR_BGR2RGB))
 
