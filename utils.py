@@ -248,9 +248,6 @@ def draw_bounding_boxes(img_target_plot, img_template_plot, models, scale_factor
     # font
     font = cv.FONT_HERSHEY_SIMPLEX
 
-    # Blue color in BGR
-    color = (255, 0, 0)
-
     h,w = cv.cvtColor(img_template_plot, cv.COLOR_BGR2GRAY).shape
     pts = np.float32([[0,0],[0,h-1],[w-1,h-1],[w-1,0] ]).reshape(-1,1,2)
 
