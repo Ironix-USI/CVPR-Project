@@ -55,8 +55,12 @@ def kaze_keypoints_and_descriptors(img_1, img_2):
 '''
 def surf_keypoints_and_descriptors(img_1, img_2):
     surf = cv.xfeatures2d.SURF_create()
-    keypoints_1, descriptors_1 = surf.detectAndCompute(img_1,None)
-    keypoints_2, descriptors_2 = surf.detectAndCompute(img_2,None)
+
+    gray1 = cv.cvtColor(img_1, cv.COLOR_BGR2GRAY)
+    gray2 = cv.cvtColor(img_2, cv.COLOR_BGR2GRAY)  
+
+    keypoints_1, descriptors_1 = surf.detectAndCompute(gray1,None)
+    keypoints_2, descriptors_2 = surf.detectAndCompute(gray2,None)
     
     return keypoints_1, descriptors_1, keypoints_2, descriptors_2
 
@@ -483,7 +487,7 @@ def remove_far_distances_clusters(clusters_, new_models_, min_distance=100):
         list_dist_per_cluster.append(dist)
     
     for k, each_cluster_dist in enumerate(list_dist_per_cluster):
-        if each_cluster_dist <= MEDIAN and each_cluster_dist < AVG:
+        if each_cluster_dist <= MEDIAN and each_cluster_dist <= AVG:
             new_test_model.append(new_models_[k])
             
             
