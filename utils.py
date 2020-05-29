@@ -459,6 +459,30 @@ def dunn_index(clusters_size_list, clusters_):
 
 
 '''
+    Function to check if the homography is good
+'''
+
+def niceHomography(H):
+    det = H[0][0] * H[1][1] - H[1][0] * H[0][1]
+    if det < 0:
+        return False
+
+    N1 = math.sqrt(H[0][0] * H[0][0] + H[1][0] * H[1][0])
+    if N1 > 4 or N1 < 0.1:
+        return False
+
+    N2 = math.sqrt(H[0][1] * H[0][1] + H[1][1] * H[1][1])
+    if N2 > 4 or N2 < 0.1:
+        return False
+
+    N3 = math.sqrt(H[2] [0] * H[2] [0] + H[2] [1] * H[2] [1])
+    if N3 > 0.002:
+        return False
+
+    return True
+
+
+'''
     Function to remove unfit clusters based on 
     comparison of mean diameter of all clusters and diameter inside of 
     particular cluster.
@@ -488,7 +512,10 @@ def remove_far_distances_clusters(clusters_, new_models_, min_distance=100):
     
     for k, each_cluster_dist in enumerate(list_dist_per_cluster):
         if each_cluster_dist <= MEDIAN and each_cluster_dist <= AVG:
-            new_test_model.append(new_models_[k])
+            ## Check if the homography is good
+            H,_ = estimate_homography(np.vstack(new_models_[k]))
+            if niceHomography(H):
+                new_test_model.append(new_models_[k])
             
             
     return new_test_model
