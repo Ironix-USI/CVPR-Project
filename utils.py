@@ -434,7 +434,8 @@ def define_clusters(cluster_model):
 
 
 '''
-    Function to compute the diameter based on convex hull. 
+    Function to compute the diameter based on convex hull.
+    https://stackoverflow.com/questions/60666155/optimizing-dunn-index-calculation
 '''
 def diameter(pts):
     # We need at least 3 points to construct the convex hull
@@ -451,6 +452,7 @@ def diameter(pts):
 '''
     Function to compute dunn index.
     The higher the index is, the better the clustering.
+    https://stackoverflow.com/questions/60666155/optimizing-dunn-index-calculation
 '''
 def dunn_index(clusters_size_list, clusters_):
     max_intracluster_dist = max(diameter(clusters_[i]) for i in range(len(clusters_)))
@@ -460,6 +462,7 @@ def dunn_index(clusters_size_list, clusters_):
 
 '''
     Function to check if the homography is good
+    https://github.com/MasteringOpenCV/code/issues/11
 '''
 
 def niceHomography(H):
@@ -522,6 +525,7 @@ def remove_far_distances_clusters(clusters_, new_models_, min_distance=100):
 
 '''
     Function to calculate centeroid point
+    https://stackoverflow.com/questions/23020659/fastest-way-to-calculate-the-centroid-of-a-set-of-coordinate-tuples-in-python-wi
 '''
 def centeroidnp(arr):
     length = arr.shape[0]
